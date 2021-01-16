@@ -1,0 +1,37 @@
+version: 2
+updates:
+  # nodejs
+  - package-ecosystem: "npm"
+    directory: "/echo"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/fixed"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/proxy"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/repeater"
+    schedule:
+      interval: "daily"
+
+  # dockers
+  - package-ecosystem: "docker"
+    directory: "/echo"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/fixed"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/proxy"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/repeater"
+    schedule:
+      interval: "daily"
