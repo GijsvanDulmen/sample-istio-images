@@ -88,4 +88,5 @@ app.all('/*', (req, res) => {
     res.send(str);
 });
 
-app.listen(8080, () => console.log(`Echo server listening`))
+const port = process.env.ECHO_SERVER_PORT || 8080;
+app.listen(port, () => console.log(`Echo server listening`))
