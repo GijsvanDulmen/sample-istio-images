@@ -64,13 +64,20 @@ app.all('/*', (req, res) => {
     str = str.replace('\$CALL', req.method + " " + req.originalUrl);
 
     if ( process.env.WATCH_DIR != undefined ) {
-      const fileList = fs.readdirSync(process.env.WATCH_DIR);
-      
       let files = '';
-      fileList.forEach(file => {
-        let path = process.env.WATCH_DIR + "/" + file;
-        files += "<tr><td>"+path+"</td><td>" + fs.readFileSync(path) + "</td></tr>";
-      })
+      const readAndAdd = path => {
+        const fileList = fs.readdirSync(path, { withFileTypes: true });
+        fileList.forEach(file => {
+          if ( file.isDirectory() ) {
+            readAndAdd(path + "/" + file.name);
+          } else {
+            let filePath = path + "/" + file.name;
+            files += "<tr><td>"+filePath+"</td><td>" + fs.readFileSync(filePath) + "</td></tr>";
+          }
+        })
+      };
+
+      readAndAdd(process.env.WATCH_DIR);
 
       str = str.replace('\$FILES', files);
       str = str.replace('\$SHOWFILES', 'table-header-group');
