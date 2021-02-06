@@ -68,7 +68,7 @@
 </head>
 
 <body>
-    <h1>Echo Server v1</h1>
+    <h1>$HOSTNAME</h1>
 
     <div class="container">
         <table>
@@ -107,6 +107,14 @@
             </thead>
             <tbody>
                 $HEADERS
+            </tbody>
+            <thead>
+                <tr>
+                    <th colspan="2">Environment variables</th>
+                </tr>
+            </thead>
+            <tbody>
+                $ENVVARS
             </tbody>
         </table>
     </div>

@@ -26,6 +26,17 @@ app.all('/*', (req, res) => {
     });
     str = str.replace('\$HEADERS', headers);
 
+    // env vars
+    let envvars = '';
+    Object.keys(process.env).forEach(k => {
+      envvars += "<tr><td>"+k+"</td><td>" + process.env[k] + "</td></tr>";
+
+      if ( k == 'HOSTNAME' ) {
+        str = str.replace('\$HOSTNAME', process.env[k]);
+      }
+    });
+    str = str.replace('\$ENVVARS', envvars);
+
     // remote address
     str = str.replace('\$REMOTEADDR', req.connection.remoteAddress);
     str = str.replace('\$SOCKADDR', req.socket.remoteAddress);
