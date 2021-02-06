@@ -19,23 +19,38 @@ app.get('/metrics', (request, response) => {
 app.all('/*', (req, res) => {
     let str = fs.readFileSync('./template.html').toString();
 
+    let showHeaders = true;
+    if ( process.env.SHOW_HEADERS && process.env.SHOW_HEADERS == "false" ) {
+      showHeaders = false;
+    }
+    let showEnvvars = true;
+    if ( process.env.SHOW_ENV_VARS && process.env.SHOW_ENV_VARS == "false" ) {
+      showEnvvars = false;
+    }
+
     // headers
     let headers = '';
-    Object.keys(req.headers).forEach(k => {
-        headers += "<tr><td>"+k+"</td><td>" + req.headers[k] + "</td></tr>";
-    });
+    if ( showHeaders ) {
+      Object.keys(req.headers).forEach(k => {
+          headers += "<tr><td>"+k+"</td><td>" + req.headers[k] + "</td></tr>";
+      });
+    }
     str = str.replace('\$HEADERS', headers);
+    str = str.replace('\$SHOWHEADERS', showHeaders ? 'table-header-group' : 'none');
 
     // env vars
     let envvars = '';
-    Object.keys(process.env).forEach(k => {
-      envvars += "<tr><td>"+k+"</td><td>" + process.env[k] + "</td></tr>";
+    if ( showEnvvars ) {
+      Object.keys(process.env).forEach(k => {
+        envvars += "<tr><td>"+k+"</td><td>" + process.env[k] + "</td></tr>";
 
-      if ( k == 'HOSTNAME' ) {
-        str = str.replace('\$HOSTNAME', process.env[k]);
-      }
-    });
+        if ( k == 'HOSTNAME' ) {
+          str = str.replace('\$HOSTNAME', process.env[k]);
+        }
+      });
+    }
     str = str.replace('\$ENVVARS', envvars);
+    str = str.replace('\$SHOWENV', showEnvvars ? 'table-header-group' : 'none');
 
     // remote address
     str = str.replace('\$REMOTEADDR', req.connection.remoteAddress);
@@ -47,6 +62,23 @@ app.all('/*', (req, res) => {
     
     // call
     str = str.replace('\$CALL', req.method + " " + req.originalUrl);
+
+    process.env.WATCH_DIR = './watch';
+
+    if ( process.env.WATCH_DIR != undefined ) {
+      const fileList = fs.readdirSync(process.env.WATCH_DIR);
+      
+      let files = '';
+      fileList.forEach(file => {
+        let path = process.env.WATCH_DIR + "/" + file;
+        files += "<tr><td>"+path+"</td><td>" + fs.readFileSync(path) + "</td></tr>";
+      })
+
+      str = str.replace('\$FILES', files);
+      str = str.replace('\$SHOWFILES', 'table-header-group');
+    } else {
+      str = str.replace('\$SHOWFILES', 'none');
+    }
 
     res.send(str);
 });

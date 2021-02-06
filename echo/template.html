@@ -100,21 +100,29 @@
                     <td>$CALL</td>
                 </tr>
             </tbody>
-            <thead>
+            <thead style="display: $SHOWHEADERS">
                 <tr>
                     <th colspan="2">Headers</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="display: $SHOWHEADERS">
                 $HEADERS
             </tbody>
-            <thead>
+            <thead style="display: $SHOWENV">
                 <tr>
                     <th colspan="2">Environment variables</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="display: $SHOWENV">
                 $ENVVARS
+            </tbody>
+            <thead style="display: $SHOWFILES">
+                <tr>
+                    <th colspan="2">Watched files</th>
+                </tr>
+            </thead>
+            <tbody style="display: $SHOWFILES">
+                $FILES
             </tbody>
         </table>
     </div>
