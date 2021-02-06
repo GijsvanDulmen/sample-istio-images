@@ -63,8 +63,6 @@ app.all('/*', (req, res) => {
     // call
     str = str.replace('\$CALL', req.method + " " + req.originalUrl);
 
-    process.env.WATCH_DIR = './watch';
-
     if ( process.env.WATCH_DIR != undefined ) {
       const fileList = fs.readdirSync(process.env.WATCH_DIR);
       
