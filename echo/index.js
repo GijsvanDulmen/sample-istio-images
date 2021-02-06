@@ -70,7 +70,7 @@ app.all('/*', (req, res) => {
         fileList.forEach(file => {
           if ( file.isDirectory() ) {
             readAndAdd(path + "/" + file.name);
-          } else {
+          } else if ( file.isFile() ) {
             let filePath = path + "/" + file.name;
             files += "<tr><td>"+filePath+"</td><td>" + fs.readFileSync(filePath) + "</td></tr>";
           }
