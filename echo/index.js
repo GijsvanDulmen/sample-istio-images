@@ -89,4 +89,13 @@ app.all('/*', (req, res) => {
 });
 
 const port = process.env.ECHO_SERVER_PORT || 8080;
-app.listen(port, () => console.log(`Echo server listening`))
+const server = app.listen(port, () => console.log(`Echo server listening`));
+
+process.on('SIGTERM', () => {
+  console.info('SIGTERM signal received.');
+  
+  server.close(() => {
+    console.log('Server stopped.');
+    process.exit(0);
+  });
+});
