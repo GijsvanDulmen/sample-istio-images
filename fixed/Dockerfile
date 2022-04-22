@@ -1,4 +1,4 @@
-FROM node:15-buster-slim
+FROM node:18-buster-slim
 
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
